@@ -1,5 +1,5 @@
 server {
-    listen 8080; #IPv4
+    listen 80; #IPv4
 
     # The location of our projects public directory.
     root            /TechnicSolder/public;

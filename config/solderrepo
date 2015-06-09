@@ -1,5 +1,5 @@
 server {
-    listen 8080; #IPv4
+    listen 80; #IPv4
 
     root            /Technic/;
     index index.php index.html index.htm;
