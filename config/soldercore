@@ -1,0 +1,37 @@
+server {
+    listen 8080; #IPv4
+
+    # The location of our projects public directory.
+    root            /TechnicSolder/public;
+    index index.php;
+
+    location / {
+        # URLs to attempt, including pretty ones
+        try_files   $uri $uri/ /index.php?$query_string;
+    }
+
+    # PHP FPM configuration.
+    location ~* \.php$ {
+            fastcgi_pass                    unix:/var/run/php5-fpm.sock;
+            fastcgi_index                   index.php;
+            fastcgi_split_path_info         ^(.+\.php)(.*)$;
+            include                         fastcgi_params;
+            fastcgi_param PATH_INFO         $fastcgi_path_info;
+    }
+
+    # We don't need .ht files with nginx.
+    location ~ /\.ht {
+            deny all;
+    }
+
+    # Hide dot files/folders
+    location ~ .*/\. {
+            return 403;
+    }
+    
+    # Set header expirations on per-project basis
+    location ~* \.(?:ico|css|js|jpe?g|JPG|png|svg|woff)$ {
+            expires 365d;
+
+    }
+}

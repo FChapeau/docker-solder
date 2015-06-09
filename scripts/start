@@ -1,0 +1,76 @@
+#!/bin/bash
+# -----------------------------------------------------------------------------
+# docker-solder /start script
+#
+# Author:  Brian Eilber
+# Updated: Jun 6th, 2015
+# -----------------------------------------------------------------------------
+USE_S3="false"
+ACCESS_KEY=""
+SECRET_KEY=""
+BUCKET=""
+
+
+if [ -f /configured ]
+then
+	CONFIGURED="true"
+else
+	CONFIGURED="false"
+fi
+
+if [ -z "$VIRTUAL_HOST" ]
+then
+	echo "VIRTUAL_HOST Must be defined"
+	exit 1
+fi
+if [ -z "$TIME_ZONE" ]
+then
+	echo "TIME_ZONE not defined, defaulting to UTC"
+	TIME_ZONE="UTC"
+fi
+if [ -z "$LANG" ]
+then
+        echo "LANG not defined, defaulting to en"
+        LANG="en"
+fi
+
+CRYPT_KEY=`hostname | sha256sum | cut -f 1 -d ' '`
+
+if [ "$USE_S3" == "true" ]
+then
+	echo "S3 support wip disabled"
+	
+        exit 1
+fi
+
+while [ "$CONFIGURED" == false ]
+do
+	sed -i s/VIRTUAL_HOST/${VIRTUAL_HOST}/g /TechnicSolder/app/config/solder.php
+        sed -i s/USE_S3/${USE_S3}/g /TechnicSolder/app/config/solder.php
+        sed -i s/ACCESS_KEY/${ACCESS_KEY}/g /TechnicSolder/app/config/solder.php
+        sed -i s/SECRET_KEY/${SECRET_KEY}/g /TechnicSolder/app/config/solder.php
+        sed -i s/BUCKET/${BUCKET}/g /TechnicSolder/app/config/solder.php
+        sed -i s/VIRTUAL_HOST/${VIRTUAL_HOST}/g /TechnicSolder/app/config/app.php
+        sed -i s/TIME_ZONE/${TIME_ZONE}/g /TechnicSolder/app/config/app.php
+        sed -i s/LANG/${LANG}/g /TechnicSolder/app/config/app.php
+	sed -i s/SUPASECRT/${CRYPT_KEY}/g /TechnicSolder/app/config/app.php
+	CONFIGURED="true"
+	touch /configured
+done
+
+case $ROLE in
+	core)
+		cp /etc/nginx/sites-available/soldercore /etc/nginx/sites-available/default
+		;;
+
+	repo)
+		cp /etc/nginx/sites-available/solderrepo /etc/nginx/sites-available/default
+		;;
+
+	*)
+		echo "Role not Defined"
+		exit 1
+		;;
+esac
+
+env
