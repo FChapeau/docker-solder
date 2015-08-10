@@ -17,7 +17,7 @@ return array(
 	 * repo location is already a URL you can use the same location here.
 	 * 
 	 **/
-	'mirror_url' => 'http://VIRTUAL_HOST/mods',
+	'mirror_url' => 'MIRROR_URL',
 
 	/**
 	 * MD5 Hashing Timeout
