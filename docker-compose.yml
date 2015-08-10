@@ -1,0 +1,17 @@
+soldercore:
+  build: .
+  environment:
+    - VIRTUAL_HOST=solder.spankythehero.com
+    - TIME_ZONE=EST
+    - LANG=en
+    - USE_S3=false
+    - ACCESS_KEY=AKIAIVD7S5K3O65LIV4A
+    - SECRET_KEY=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
+    - BUCKET=sthsolder
+    - MIRROR_URL=http://files.spankythehero.com/mods/
+  volumes_from:
+    - chlorine_nginxstatic_1
+  volumes:
+    - /opt/solder:/data
+  ports:
+    - "10089:80"

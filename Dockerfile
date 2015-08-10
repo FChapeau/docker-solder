@@ -35,7 +35,7 @@ RUN buildDeps=" \
 		libxml2-dev \
 	" \
 	&& set -x \
-	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
+	&& apt-get update && apt-get install -y $buildDeps git nginx --no-install-recommends && rm -rf /var/lib/apt/lists/* \
 	&& curl -SL "http://php.net/get/php-$PHP_VERSION.tar.bz2/from/this/mirror" -o php.tar.bz2 \
 	&& curl -SL "http://php.net/get/php-$PHP_VERSION.tar.bz2.asc/from/this/mirror" -o php.tar.bz2.asc \
 	&& gpg --verify php.tar.bz2.asc \
@@ -71,15 +71,7 @@ RUN	curl -sS https://getcomposer.org/installer | php
 
 RUN	mv composer.phar /usr/local/bin/composer
 
-RUN	apt-get update && \
-	apt-get install -y git nginx  --no-install-recommends && \
-	rm -r /var/lib/apt/lists/*
-
-#RUN	ls -lah /TechnicSolder
-
 RUN	git clone https://github.com/TechnicPack/TechnicSolder.git /TechnicSolder
-
-RUN     ls -lah /TechnicSolder
 
 RUN	cd /TechnicSolder && composer install --no-dev --no-interaction  --prefer-source
 
