@@ -18,7 +18,7 @@ RUN	curl -sS https://getcomposer.org/installer | php
 
 RUN	mv composer.phar /usr/local/bin/composer
 
-RUN	git clone https://github.com/TechnicPack/TechnicSolder.git /TechnicSolder
+RUN	git clone https://github.com/beilber/TechnicSolder.git -b dev --single-branch /TechnicSolder 
 
 RUN	cd /TechnicSolder && composer install --no-dev --no-interaction
 
