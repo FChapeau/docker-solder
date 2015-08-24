@@ -7,8 +7,12 @@ RUN apt-get update && apt-get install -y \
         php5-cli \
         php5-mcrypt \
 	php5-curl \
+	php5-pgsql \
+	php5-apcu \
+	php5-gd \
 	git \
-	curl
+	curl \
+	vim
 
 RUN	curl -sS https://getcomposer.org/installer | php 
 

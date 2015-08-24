@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'default' => 'sqlite',
+	'default' => 'pgsql',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -65,12 +65,12 @@ return array(
 
 		'pgsql' => array(
 			'driver'   => 'pgsql',
-			'host'     => 'localhost',
-			'database' => 'forge',
-			'username' => 'forge',
-			'password' => '',
+			'host'     => 'POSTGRESQL_PORT_5432_TCP_ADDR',
+			'database' => 'POSTGRESQL_ENV_DB_NAME',
+			'username' => 'POSTGRESQL_ENV_DB_USER',
+			'password' => 'POSTGRESQL_ENV_DB_PASS',
 			'charset'  => 'utf8',
-			'prefix'   => '',
+			'prefix'   => 'solder_',
 			'schema'   => 'public',
 		),
 
@@ -114,8 +114,8 @@ return array(
 		'cluster' => false,
 
 		'default' => array(
-			'host'     => '127.0.0.1',
-			'port'     => 6379,
+			'host'     => 'REDISIO_PORT_6379_TCP_ADDR',
+			'port'     => REDISIO_PORT_6379_TCP_PORT,
 			'database' => 0,
 		),
 

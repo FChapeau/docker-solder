@@ -34,7 +34,7 @@ then
         LANG="en"
 fi
 
-CRYPT_KEY=`hostname | sha256sum | cut -f 1 -d ' '`
+CRYPT_KEY=`hostname | md5sum | cut -f 1 -d ' '`
 
 if [ "$USE_S3" == "true" ]
 then
@@ -54,13 +54,24 @@ do
         sed -i s/TIME_ZONE/${TIME_ZONE}/g /TechnicSolder/app/config/app.php
         sed -i s/LANG/${LANG}/g /TechnicSolder/app/config/app.php
 	sed -i s/SUPASECRT/${CRYPT_KEY}/g /TechnicSolder/app/config/app.php
+	sed -i s/POSTGRESQL_PORT_5432_TCP_ADDR/${POSTGRESQL_PORT_5432_TCP_ADDR}/g /TechnicSolder/app/config/database.php
+	sed -i s/POSTGRESQL_ENV_DB_NAME/${POSTGRESQL_ENV_DB_NAME}/g /TechnicSolder/app/config/database.php
+	sed -i s/POSTGRESQL_ENV_DB_USER/${POSTGRESQL_ENV_DB_USER}/g /TechnicSolder/app/config/database.php
+	sed -i s/POSTGRESQL_ENV_DB_PASS/${POSTGRESQL_ENV_DB_PASS}/g /TechnicSolder/app/config/database.php
+	sed -i s/REDISIO_PORT_6379_TCP_ADDR/${REDISIO_PORT_6379_TCP_ADDR}/g /TechnicSolder/app/config/database.php
+	sed -i s/REDISIO_PORT_6379_TCP_PORT/${REDISIO_PORT_6379_TCP_PORT}/g /TechnicSolder/app/config/database.php
 	CONFIGURED="true"
 	touch /configured
 done
 
+cd /TechnicSolder
+
+php artisan migrate:install
+php artisan migrate
+
 cp -v /etc/nginx/soldercore /etc/nginx/conf.d/default.conf
 
-
+chown -R nginx.nginx /TechnicSolder
 sed -i s/www-data/nginx/g /etc/php5/fpm/pool.d/www.conf
 #echo "listen.mode = 0777" >> /etc/php5/fpm/pool.d/www.conf
 
